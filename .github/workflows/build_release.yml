@@ -25,7 +25,7 @@ jobs:
           pip install pyinstaller
 
       - name: Build Binary
-        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy
+        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy --hidden-import=scapy.all --collect-all scapy
 
       - name: Archive Binary
         run: mv dist/client ./linux_binary
@@ -57,7 +57,7 @@ jobs:
           pip install pyinstaller
 
       - name: Build Executable
-        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy
+        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy --hidden-import=scapy.all --collect-all scapy
 
       - name: Archive Executable
         run: move dist\client.exe windows_binary.exe
