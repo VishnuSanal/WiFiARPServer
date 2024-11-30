@@ -19,19 +19,20 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install Dependencies
+      - name: Create Virtual Environment
         run: |
-          python -m pip install --upgrade pip
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
           pip install pyinstaller
 
       - name: Build Binary
-        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy --hidden-import=scapy.all --collect-all scapy
+        run: |
+          source venv/bin/activate
+          pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy --hidden-import=scapy.all --collect-all scapy
 
       - name: Archive Binary
         run: mv dist/client ./linux_binary
-
-#      - name: Make it Executable
-#        run: chmod +x ./linux_binary/dist/client
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
@@ -51,13 +52,17 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install Dependencies
+      - name: Create Virtual Environment
         run: |
-          python -m pip install --upgrade pip
+          python -m venv venv
+          venv\Scripts\activate
+          pip install --upgrade pip
           pip install pyinstaller
 
       - name: Build Executable
-        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy --hidden-import=scapy.all --collect-all scapy
+        run: |
+          venv\Scripts\activate
+          pyinstaller --clean -y --onefile --add-data="constants.py:." client.py --hidden-import scapy --hidden-import=scapy.all --collect-all scapy
 
       - name: Archive Executable
         run: move dist\client.exe windows_binary.exe
@@ -73,7 +78,7 @@ jobs:
 #    needs: [ build-linux, build-windows ]
 #    runs-on: ubuntu-latest
 #    steps:
-#      - name: Download Artifacts
+#      - name: Download Linux Binary
 #        uses: actions/download-artifact@v3
 #        with:
 #          name: linux-binary
@@ -95,4 +100,4 @@ jobs:
 #          tag: ${{ github.run_number }}
 #          name: Release v${{ github.run_number }}
 #          body: |
-#            - Built executables for both Linux and Windows platforms.
+#            - Built executables for Linux and Windows platforms.
