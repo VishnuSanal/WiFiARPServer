@@ -25,7 +25,7 @@ jobs:
           pip install pyinstaller
 
       - name: Build Binary
-        run: pyinstaller --onefile --add-data "constants.py:." client.py
+        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py
 
       - name: Archive Binary
         run: mv dist/client ./linux_binary
@@ -54,7 +54,7 @@ jobs:
           pip install pyinstaller
 
       - name: Build Executable
-        run: pyinstaller --onefile --add-data "constants.py:." client.py
+        run: pyinstaller --clean -y --onefile --add-data="constants.py:." client.py
 
       - name: Archive Executable
         run: move dist\client.exe windows_binary.exe
