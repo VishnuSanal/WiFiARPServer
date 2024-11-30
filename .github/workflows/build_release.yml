@@ -30,8 +30,8 @@ jobs:
       - name: Archive Binary
         run: mv dist/client ./linux_binary
 
-      - name: Make it Executable
-        run: chmod +x linux_binary/dist/client
+#      - name: Make it Executable
+#        run: chmod +x ./linux_binary/dist/client
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
