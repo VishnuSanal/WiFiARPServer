@@ -25,16 +25,6 @@ def save_token_in_redis(redis_client, token, user_email, target_mac, expiration_
     print(f"Stored token {token} in Redis.")
 
 
-def save_token(token, user_email, target_mac, expiration_minutes=15):
-    """Save the token with expiration time."""
-    expiration_time = datetime.utcnow() + timedelta(minutes=expiration_minutes)
-    token_store[token] = {
-        constants.store_key_email: user_email,
-        constants.store_key_expires_at: expiration_time,
-        constants.store_key_mac_id: target_mac,
-    }
-
-
 def read_esmtprc(file_path="/home/vishnu/.esmtprc"):
     """
     Read SMTP configuration from .esmtprc file with the custom format.
