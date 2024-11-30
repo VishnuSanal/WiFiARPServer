@@ -1,0 +1,16 @@
+FROM python:3.10-slim
+
+RUN apt-get update && apt-get install -y sudo \
+    && useradd -ms /bin/bash user \
+    && echo "user:password" | chpasswd \
+    && adduser user sudo
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+ENV PYTHONUNBUFFERED=1
+
+CMD ["sudo", "python3", "server.py"]

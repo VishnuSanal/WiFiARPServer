@@ -1,8 +1,20 @@
 version: "3.8"
+
 services:
-  web:
-    build: .
+  approval_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.approval_server
     ports:
       - "5000:5000"
+    volumes:
+      - .:/app
+
+  arp_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.arp_server
+    ports:
+      - "5001:5001"
     volumes:
       - .:/app
