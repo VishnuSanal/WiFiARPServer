@@ -26,7 +26,7 @@ def send_request(admission_number, interface="wlo1"):
 
 
 if __name__ == "__main__":
-    iface = "wlo1"
+    iface = input("Enter your NIC name: ")  # FIXME: fetch this automatically
     admn_no = input("Enter your admission number: ")
 
     send_request(admn_no, iface)
