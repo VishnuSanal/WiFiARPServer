@@ -1,3 +1,4 @@
+import psutil
 from scapy.all import ARP, Ether, sendp
 from scapy.arch import get_if_hwaddr, get_if_addr
 from scapy.packet import Padding
@@ -25,9 +26,32 @@ def send_request(admission_number, interface="wlo1"):
     sendp(arp_reply, iface=interface, verbose=1)
 
 
+def get_active_nic_list():
+    """
+    Returns the names of the currently active NIC based on sent/received traffic.
+    """
+    nic_list = []
+    try:
+        net_stats = psutil.net_if_stats()
+        net_io_counters = psutil.net_io_counters(pernic=True)
+
+        for nic, stats in net_stats.items():
+            if stats.isup:
+                io_counters = net_io_counters.get(nic)
+                if io_counters and (io_counters.bytes_sent > 0 or io_counters.bytes_recv > 0):
+                    nic_list.append(nic)
+    except Exception:
+        pass
+
+    return nic_list
+
+
 if __name__ == "__main__":
-    iface = input("Enter your NIC name: ")  # FIXME: fetch this automatically
     admn_no = input("Enter your admission number: ")
 
-    send_request(admn_no, iface)
-    # print(socket.if_nameindex())
+    # hack! couldn't figure out a reliable way to get the active wireless interface (without using assumptions like w*)
+    for nic in get_active_nic_list():
+        try:
+            send_request(admn_no, nic)
+        except Exception:
+            pass
