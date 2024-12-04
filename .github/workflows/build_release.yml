@@ -62,3 +62,36 @@ jobs:
         with:
           name: windows-executable
           path: ./windows_binary.exe
+
+  build-macos:
+    name: Build macOS Binary
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Create Virtual Environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build Binary
+        run: |
+          source venv/bin/activate
+          pyinstaller --onefile --collect-all scapy your_script.py
+
+      - name: Archive Binary
+        run: mv dist/your_script ./macos_binary
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-binary
+          path: ./macos_binary
