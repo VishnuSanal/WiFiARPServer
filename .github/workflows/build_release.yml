@@ -84,11 +84,13 @@ jobs:
 
       - name: Build Binary
         run: |
+          python -m venv venv
           source venv/bin/activate
-          pyinstaller --onefile --collect-all scapy your_script.py
+          pip install -r requirements.txt
+          pyinstaller --clean -y --onefile --add-data="constants.py:." client.py
 
       - name: Archive Binary
-        run: mv dist/your_script ./macos_binary
+        run: mv dist/client ./linux_binary
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
