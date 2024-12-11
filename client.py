@@ -53,5 +53,8 @@ if __name__ == "__main__":
     for nic in get_active_nic_list():
         try:
             send_request(admn_no, nic)
-        except Exception:
-            pass
+            print("SUCCESS: Please check your e-mail for verification")
+        except PermissionError:
+            print("ERROR: Please run with elevated privileges. use sudo")
+        except Exception as e:
+            print("ERROR: unknown error occurred", e)
