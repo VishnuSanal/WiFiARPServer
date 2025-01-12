@@ -7,7 +7,6 @@ import constants
 
 
 def send_request(admission_number, interface="wlo1"):
-    # target_ip = "192.168.1.1"
     target_ip = get_if_addr(interface)  # FIXME: add the connection server's IP
 
     kv_data = {constants.key_request: "True", constants.key_adm_no_extra: admission_number}
@@ -20,8 +19,6 @@ def send_request(admission_number, interface="wlo1"):
                 hwdst="00:00:00:00:00:00") /
             Padding(load=extra_data)
     )
-
-    # print(f"Request sent")
 
     sendp(arp_reply, iface=interface, verbose=1)
 

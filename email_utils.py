@@ -21,7 +21,7 @@ def save_token_in_redis(redis_client, token, user_email, target_mac, expiration_
         constants.store_key_email: user_email,
         constants.store_key_mac_id: target_mac,
     })
-    redis_client.expire(token_key, 15 * 60 * 60)
+    redis_client.expire(token_key, expiration_time)
     print(f"Stored token {token} in Redis.")
 
 
@@ -84,8 +84,12 @@ def send_approval_link(redis_client, admission_number, target_mac):
     token = generate_token()
     user_email = f"{admission_number}@gectcr.ac.in"
 
+    server_url = "https://gectcr.ac.in"
+    # server_url = "http://127.0.0.1:5000"  # debug
+
     save_token_in_redis(redis_client, token, user_email, target_mac)
-    approval_link = f"https://gectcr.com/wificonnections/approve?token={token}"
+
+    approval_link = f"{server_url}/wificonnections/approve?token={token}"
 
     # send_email(user_email, approval_link, target_mac) # FIXME: debug safety!
     print(f"Approval link sent to {user_email}: {approval_link}")

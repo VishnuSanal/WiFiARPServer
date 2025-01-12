@@ -72,4 +72,11 @@ def arp_sniffer(interface):
 
 
 if __name__ == "__main__":
-    arp_sniffer(interface="wlo1")
+    interface = "wlo1"  # TODO: replace with the interface used on the server
+
+    try:
+        arp_sniffer(interface=interface)
+    except PermissionError:
+        print("ERROR: Please run with elevated privileges. use sudo")
+    except Exception as e:
+        print("ERROR: unknown error occurred", e)
