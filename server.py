@@ -28,18 +28,13 @@ def is_desktop_os(ip):
         False if the OS is Android or iOS.
     """
     try:
-        result = subprocess.run(['nmap', '-O', ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        result = subprocess.run(['nmap', '-O', '-Pn', ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         output = result.stdout
 
         if "OS details" in output:
             os_details = output.split("OS details:")[1].split("\n")[0].strip()
             if re.search(r'Windows|Linux|macOS|Darwin', os_details, re.IGNORECASE):
                 return True
-            elif re.search(r'Android|iOS', os_details, re.IGNORECASE):
-                return False
-
-        if "No exact OS matches" in output:
-            return False
 
     except Exception as e:
         print(f"Error: {e}")
