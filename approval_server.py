@@ -38,8 +38,6 @@ def approve():
     user_email = token_data[constants.store_key_email]
     user_mac_id = token_data[constants.store_key_mac_id]
 
-    # TODO: check target OS
-
     delete_token_from_redis(token)
     # TODO: add to whitelist
     return jsonify({"message": f"Approval successful for {user_email} ({user_mac_id})"}), 200

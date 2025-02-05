@@ -84,8 +84,8 @@ def send_approval_link(redis_client, admission_number, target_mac):
     token = generate_token()
     user_email = f"{admission_number}@gectcr.ac.in"
 
-    server_url = "https://gectcr.ac.in"
-    # server_url = "http://127.0.0.1:5000"  # debug
+    # server_url = "https://gectcr.ac.in"
+    server_url = "http://127.0.0.1:5000"  # debug
 
     save_token_in_redis(redis_client, token, user_email, target_mac)
 
